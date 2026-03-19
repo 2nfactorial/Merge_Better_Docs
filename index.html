@@ -463,13 +463,24 @@ Replace <code>YOUR_POLICY_ID</code> with the Policy ID from Step 2:</p>
       - <span class="kw">name:</span> <span class="fn">Extract Jira Issue Key from PR Title</span>
         <span class="kw">id:</span> extract
         <span class="kw">env:</span>
-          <span class="kw">PR_TITLE:</span> <span class="str">"${{ github.event.pull_request.title }}"</span>
+          <span class="kw">PR_TITLE:</span>  <span class="str">"${{ github.event.pull_request.title }}"</span>
+          <span class="kw">GH_TOKEN:</span>  <span class="str">"${{ github.token }}"</span>
+          <span class="kw">PR_NUMBER:</span> <span class="str">"${{ github.event.pull_request.number }}"</span>
         <span class="kw">run:</span> |
           ISSUE_KEY=$(echo "$PR_TITLE" \
             | grep -oE '[A-Z]+-[0-9]+' | head -1)
           if [ -z "$ISSUE_KEY" ]; then
             echo "[X] No Jira issue key found in PR title."
-            echo "    Please include the key, e.g: NEON-123 Your PR title"
+            {
+              echo "## MergeBetter: No Jira Issue Key Found"
+              echo ""
+              echo "Please add a Jira issue key to your PR title."
+              echo ""
+              echo "| Field | Value |"
+              echo "|-------|-------|"
+              echo "| Current title | \`$PR_TITLE\` |"
+              echo "| Expected format | \`PROJ-123 Your PR description\` |"
+            } | gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file -
             exit 1
           fi
           echo "[OK] Found Jira issue key: $ISSUE_KEY"
@@ -518,7 +529,7 @@ Replace <code>YOUR_POLICY_ID</code> with the Policy ID from Step 2:</p>
               echo "| Policy | Branch Rule | Reason |"
               echo "|--------|-------------|--------|"
               echo "$BODY" | jq -r '.failures[] | "| \(.policy) | \(.rule) | \(.reason) |"'
-            } | gh pr comment "$PR_NUMBER" --body-file -
+            } | gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file -
 
             <span class="cm"># Also write to the step summary (visible via the "Details" link)</span>
             {
