@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MergeBetter - User Guide</title>
+  <style>
+    body {
+      font-family: Calibri, Arial, sans-serif;
+      font-size: 11pt;
+      color: #1a1a1a;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 60px;
+      line-height: 1.6;
+    }
+
+    /* ---- Header ---- */
+    .doc-header {
+      border-bottom: 3px solid #0052CC;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .doc-header h1 {
+      color: #0052CC;
+      font-size: 26pt;
+      margin: 0 0 6px 0;
+    }
+    .doc-meta {
+      color: #555;
+      font-size: 10pt;
+    }
+    .doc-meta span {
+      margin-right: 20px;
+    }
+
+    /* ---- Headings ---- */
+    h2 {
+      color: #0052CC;
+      font-size: 15pt;
+      border-bottom: 1px solid #DEEBFF;
+      padding-bottom: 4px;
+      margin-top: 40px;
+    }
+    h3 {
+      color: #0065FF;
+      font-size: 12pt;
+      margin-top: 24px;
+    }
+
+    /* ---- Table of Contents ---- */
+    .toc {
+      background: #F4F5F7;
+      border-left: 4px solid #0052CC;
+      padding: 16px 24px;
+      margin-bottom: 32px;
+      border-radius: 0 4px 4px 0;
+    }
+    .toc h2 {
+      font-size: 12pt;
+      margin: 0 0 10px 0;
+      border: none;
+      color: #0052CC;
+    }
+    .toc ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .toc li {
+      margin: 4px 0;
+    }
+    .toc a {
+      color: #0052CC;
+      text-decoration: none;
+    }
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    /* ---- Links ---- */
+    a {
+      color: #0052CC;
+    }
+
+    /* ---- Code ---- */
+    code {
+      background: #F4F5F7;
+      border: 1px solid #DFE1E6;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 10pt;
+      color: #172B4D;
+    }
+    pre {
+      background: #1e2433;
+      color: #abb2bf;
+      border-radius: 5px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 9.5pt;
+      line-height: 1.5;
+      margin: 12px 0;
+    }
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+    /* Syntax highlight colours inside pre blocks */
+    .kw  { color: #c678dd; } /* keywords: name, on, jobs, runs-on, steps, run, env */
+    .str { color: #98c379; } /* strings  */
+    .cm  { color: #5c6370; font-style: italic; } /* comments */
+    .pl  { color: #e06c75; } /* placeholders / variables */
+    .fn  { color: #61afef; } /* function / step names */
+
+    /* ---- Flow diagram ---- */
+    .flow {
+      background: #F4F5F7;
+      border: 1px solid #DFE1E6;
+      border-radius: 5px;
+      padding: 16px 24px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 10pt;
+      line-height: 1.8;
+      white-space: pre;
+    }
+
+    /* ---- Tables ---- */
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 14px 0;
+      font-size: 10.5pt;
+    }
+    th {
+      background: #0052CC;
+      color: #fff;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #DFE1E6;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background: #F4F5F7;
+    }
+
+    /* ---- Callout boxes ---- */
+    .tip, .warn, .info {
+      border-radius: 4px;
+      padding: 10px 16px;
+      margin: 12px 0;
+      font-size: 10.5pt;
+    }
+    .tip  { background: #E3FCEF; border-left: 4px solid #00875A; color: #1a4731; }
+    .warn { background: #FFFAE6; border-left: 4px solid #FF991F; color: #4d3800; }
+    .info { background: #DEEBFF; border-left: 4px solid #0052CC; color: #0a2a6e; }
+
+    /* ---- Status badges ---- */
+    .badge-ok  { background:#E3FCEF; color:#006644; border:1px solid #ABF5D1; border-radius:3px; padding:1px 6px; font-size:9.5pt; font-weight:bold; }
+    .badge-opt { background:#F4F5F7; color:#42526E; border:1px solid #C1C7D0; border-radius:3px; padding:1px 6px; font-size:9.5pt; }
+    .badge-on  { background:#E3FCEF; color:#006644; border:1px solid #ABF5D1; border-radius:3px; padding:1px 6px; font-size:9.5pt; font-weight:bold; }
+    .badge-off { background:#F4F5F7; color:#42526E; border:1px solid #C1C7D0; border-radius:3px; padding:1px 6px; font-size:9.5pt; }
+    .badge-err { background:#FFEBE6; color:#BF2600; border:1px solid #FFBDAD; border-radius:3px; padding:1px 6px; font-size:9.5pt; font-weight:bold; }
+
+    /* ---- Steps ---- */
+    .step-num {
+      display: inline-block;
+      background: #0052CC;
+      color: #fff;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 22px;
+      font-size: 10pt;
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    ol li, ul li {
+      margin: 5px 0;
+    }
+
+    /* ---- Footer ---- */
+    .doc-footer {
+      border-top: 1px solid #DFE1E6;
+      margin-top: 50px;
+      padding-top: 14px;
+      color: #666;
+      font-size: 9.5pt;
+    }
+
+    hr { border: none; border-top: 1px solid #DFE1E6; margin: 32px 0; }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<div class="doc-header">
+  <h1>MergeBetter - User Guide</h1>
+  <div class="doc-meta">
+    <span><strong>Version:</strong> 1.0</span>
+    <span><strong>App:</strong> MergeBetter - Jira Merge Policies</span>
+    <span><strong>By:</strong> 2nfactorial</span>
+    <span><strong>Support:</strong> <a href="mailto:2nfactorial@gmail.com">2nfactorial@gmail.com</a></span>
+  </div>
+</div>
+
+<!-- ===== TABLE OF CONTENTS ===== -->
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">What is MergeBetter?</a></li>
+    <li><a href="#s2">How It Works</a></li>
+    <li><a href="#s3">Installation</a></li>
+    <li><a href="#s4">Opening the App</a></li>
+    <li><a href="#s5">Creating Your First Policy</a></li>
+    <li><a href="#s6">Understanding Rules</a></li>
+    <li><a href="#s7">Managing Policies</a></li>
+    <li><a href="#s8">Webhook URL - Connecting to GitHub</a></li>
+    <li><a href="#s9">GitHub Actions Integration</a></li>
+    <li><a href="#s10">JQL Query Examples</a></li>
+    <li><a href="#s11">Multiple Policies &amp; Repos</a></li>
+    <li><a href="#s12">Frequently Asked Questions</a></li>
+    <li><a href="#s13">Troubleshooting</a></li>
+    <li><a href="#s14">Support</a></li>
+  </ol>
+</div>
+
+<!-- ===== SECTION 1 ===== -->
+<h2 id="s1">1. What is MergeBetter?</h2>
+<p><strong>MergeBetter</strong> is a Jira Cloud app that prevents GitHub pull requests from merging until the linked Jira issue meets conditions you define.</p>
+<p>Think of it as a <strong>quality gate</strong> between your Jira workflow and your GitHub branches.</p>
+<p><strong>Example use cases:</strong></p>
+<ul>
+  <li>Block merges to <code>main</code> unless the Jira ticket is marked <strong>"Done"</strong></li>
+  <li>Prevent releases to <code>release-*</code> unless the fix version matches the release</li>
+  <li>Stop hotfix merges unless the issue type is <strong>"Bug"</strong> and status is <strong>"In Review"</strong></li>
+  <li>Ensure no story is merged unless it has been assigned to the correct sprint</li>
+</ul>
+
+<hr>
+
+<!-- ===== SECTION 2 ===== -->
+<h2 id="s2">2. How It Works</h2>
+<div class="flow">Developer opens Pull Request on GitHub
+           |
+           v
+GitHub Actions workflow runs automatically
+           |
+           v
+MergeBetter webhook checks the linked Jira issue
+(issue key extracted from the PR title, e.g. "NEON-123")
+           |
+           +--- Issue meets policy conditions? ---> [PASS] PR check passes -> merge allowed
+           |
+           \--- Issue does NOT meet conditions? --> [FAIL] PR check fails -> merge blocked
+                                                         (with your custom rejection message)</div>
+<p><strong>Key points:</strong></p>
+<ul>
+  <li>The Jira issue key must be included in the <strong>PR title</strong> (e.g. <code>NEON-123 Fix login bug</code>)</li>
+  <li>MergeBetter checks the issue against your <strong>JQL rules</strong></li>
+  <li>The result appears as a <strong>GitHub status check</strong> on the pull request</li>
+  <li>No code or credentials are stored outside Atlassian's infrastructure</li>
+</ul>
+
+<hr>
+
+<!-- ===== SECTION 3 ===== -->
+<h2 id="s3">3. Installation</h2>
+<h3>Step 1 - Install from Atlassian Marketplace</h3>
+<ol>
+  <li>Go to your Jira Cloud instance (e.g. <code>yourcompany.atlassian.net</code>)</li>
+  <li>Click <strong>Apps</strong> in the top navigation -> <strong>Explore more apps</strong></li>
+  <li>Search for <strong>"MergeBetter"</strong></li>
+  <li>Click <strong>Get app</strong> -> <strong>Get it now</strong></li>
+  <li>Confirm the installation</li>
+</ol>
+<div class="info"><strong>Who can install?</strong> Only Jira administrators can install Marketplace apps.</div>
+
+<h3>Step 2 - Verify Installation</h3>
+<p>After installation:</p>
+<ol>
+  <li>Go to any Jira project</li>
+  <li>Click <strong>Project settings</strong> (bottom-left sidebar)</li>
+  <li>Scroll down to the <strong>Apps</strong> section</li>
+  <li>You should see <strong>"Merge Policies"</strong> listed</li>
+</ol>
+
+<hr>
+
+<!-- ===== SECTION 4 ===== -->
+<h2 id="s4">4. Opening the App</h2>
+<ol>
+  <li>Navigate to your <strong>Jira project</strong></li>
+  <li>Click <strong>Project settings</strong> in the left sidebar</li>
+  <li>Under <strong>Apps</strong>, click <strong>Merge Policies</strong></li>
+</ol>
+<p>You will see the <strong>Merge Policies dashboard</strong> listing all policies for this project.</p>
+
+<hr>
+
+<!-- ===== SECTION 5 ===== -->
+<h2 id="s5">5. Creating Your First Policy</h2>
+
+<h3>Step 1 - Click "+ Add Policy"</h3>
+<p>On the Merge Policies dashboard, click the <strong>+ Add Policy</strong> button (top-left).</p>
+
+<h3>Step 2 - Fill in Policy Details</h3>
+<table>
+  <tr><th>Field</th><th>Required</th><th>Description</th></tr>
+  <tr><td><strong>Name</strong></td><td><span class="badge-ok">Required</span></td><td>A short label for this policy (e.g. <code>Main Branch Policy</code>)</td></tr>
+  <tr><td><strong>Description</strong></td><td><span class="badge-opt">Optional</span></td><td>Notes about what this policy does and which repos use it</td></tr>
+</table>
+
+<h3>Step 3 - Add Rules</h3>
+<p>Each policy can have one or more <strong>rules</strong>. Click <strong>+ Add Rule</strong> to add your first rule. Each rule has three parts:</p>
+<table>
+  <tr><th>Column</th><th>Description</th><th>Example</th></tr>
+  <tr><td><strong>Target Branch Pattern</strong></td><td>The GitHub branch this rule applies to</td><td><code>main</code>, <code>release-*</code>, <code>hotfix-*</code></td></tr>
+  <tr><td><strong>Rejection Message</strong></td><td>What the developer sees if the check fails</td><td>Ticket must be In Progress with fix version 2.1.0</td></tr>
+  <tr><td><strong>JQL Query</strong></td><td>The condition the Jira issue must satisfy</td><td><code>status = "In Progress" AND fixVersion = "2.1.0"</code></td></tr>
+</table>
+
+<h3>Step 4 - Test Your JQL</h3>
+<p>Before saving, click <strong>Test JQL</strong> next to each rule to validate your query.</p>
+<ul>
+  <li><span class="badge-ok">Green</span> - JQL is valid and will work correctly</li>
+  <li><span class="badge-err">Red</span> - JQL has an error; the error message tells you exactly what to fix</li>
+</ul>
+
+<h3>Step 5 - Save</h3>
+<p>Click <strong>Save Changes</strong> (top-right or bottom of the form). Your policy is now active and ready to connect to GitHub.</p>
+
+<hr>
+
+<!-- ===== SECTION 6 ===== -->
+<h2 id="s6">6. Understanding Rules</h2>
+
+<h3>Branch Pattern Matching</h3>
+<p>The <strong>Target Branch Pattern</strong> supports wildcards using <code>*</code>.</p>
+<table>
+  <tr><th>Pattern</th><th>Matches</th></tr>
+  <tr><td><code>main</code></td><td>Only the <code>main</code> branch</td></tr>
+  <tr><td><code>release-*</code></td><td><code>release-2.1.0</code>, <code>release-3.0</code>, <code>release-hotfix</code></td></tr>
+  <tr><td><code>hotfix-*</code></td><td><code>hotfix-login</code>, <code>hotfix-payment-bug</code></td></tr>
+  <tr><td><code>feature-*</code></td><td><code>feature-dark-mode</code>, <code>feature-NEON-99</code></td></tr>
+</table>
+<div class="tip"><strong>Tip:</strong> Use <code>release-*</code> to cover all release branches with one rule instead of creating a separate rule for each release.</div>
+
+<h3>JQL Query</h3>
+<p>The JQL query is evaluated against the Jira issue linked in the PR title. The issue <strong>must match</strong> the JQL for the PR check to pass.</p>
+<p>For example, if your JQL is:</p>
+<pre><code>status = "In Progress" AND fixVersion = "2.1.0"</code></pre>
+<p>Then the issue must be <strong>In Progress</strong> AND have fix version <strong>2.1.0</strong> for the PR to be allowed to merge.</p>
+
+<h3>Rejection Message</h3>
+<p>This is what developers see in GitHub when their PR is blocked. Make it <strong>clear and actionable</strong>:</p>
+<ul>
+  <li><span class="badge-err">Bad</span> &nbsp; <code>Policy violation</code></li>
+  <li><span class="badge-ok">Good</span> &nbsp; <code>The Jira ticket must be "In Progress" with fix version 2.1.0 before merging to release-2.1.0</code></li>
+</ul>
+
+<h3>Multiple Rules in One Policy</h3>
+<p>You can add multiple rules to a single policy. <strong>All matching rules must pass</strong> for the PR to be allowed. A rule only applies if its Target Branch Pattern matches the PR's target branch.</p>
+<table>
+  <tr><th>#</th><th>Target Branch</th><th>JQL</th><th>Purpose</th></tr>
+  <tr><td>1</td><td><code>main</code></td><td><code>status = "Done"</code></td><td>Main branch: ticket must be Done</td></tr>
+  <tr><td>2</td><td><code>release-*</code></td><td><code>fixVersion is not EMPTY AND status = "In Progress"</code></td><td>Release branches: must have a fix version</td></tr>
+  <tr><td>3</td><td><code>hotfix-*</code></td><td><code>issuetype = Bug AND priority in (High, Critical)</code></td><td>Hotfixes: only high-priority bugs</td></tr>
+</table>
+
+<hr>
+
+<!-- ===== SECTION 7 ===== -->
+<h2 id="s7">7. Managing Policies</h2>
+
+<h3>Enable / Disable a Policy</h3>
+<p>On the dashboard, each policy has a <strong>toggle switch</strong>:</p>
+<ul>
+  <li><span class="badge-on">ACTIVE</span> - Policy is enforced on all PRs</li>
+  <li><span class="badge-off">DISABLED</span> - Policy is paused; PRs are not checked</li>
+</ul>
+<p>Use this to temporarily suspend a policy without deleting it (e.g. during a hotfix emergency).</p>
+
+<h3>Edit a Policy</h3>
+<p>Click <strong>Edit</strong> next to any policy to open the editor and modify its name, description, or rules.</p>
+
+<h3>Delete a Policy</h3>
+<p>Click <strong>Delete</strong> next to a policy to permanently remove it.</p>
+<div class="warn"><strong>[!] Warning:</strong> Deleting a policy cannot be undone. Any GitHub Actions workflows pointing to this policy's ID will no longer have a matching policy and will pass by default.</div>
+
+<hr>
+
+<!-- ===== SECTION 8 ===== -->
+<h2 id="s8">8. Webhook URL - Connecting to GitHub</h2>
+<p>Each Jira installation gets a <strong>unique webhook URL</strong> - this is the endpoint GitHub Actions calls to trigger a policy check.</p>
+
+<h3>Finding Your Webhook URL</h3>
+<ol>
+  <li>Go to <strong>Merge Policies</strong> in your project settings</li>
+  <li>Click <strong>Show Webhook URL</strong> (top-right of the dashboard)</li>
+  <li>The URL will appear with a <strong>Copy</strong> button</li>
+  <li>A ready-to-use <strong>GitHub Actions workflow snippet</strong> is also shown</li>
+</ol>
+<div class="info"><strong>Your URL looks like:</strong><br><code>https://webhook.forge.atlassian.com/webtrigger/...</code></div>
+
+<h3>Security</h3>
+<ul>
+  <li>The webhook URL acts as a <strong>shared secret</strong> - only people with the URL can trigger checks</li>
+  <li><strong>Store it as a GitHub Actions secret</strong> - never hardcode it in your workflow file</li>
+  <li>Always set <code>policyId</code> in every repo's workflow - this is required to isolate repos from each other</li>
+</ul>
+
+<hr>
+
+<!-- ===== SECTION 9 ===== -->
+<h2 id="s9">9. GitHub Actions Integration</h2>
+
+<h3>Step 1 - Add Webhook URL as a GitHub Secret</h3>
+<ol>
+  <li>Go to your GitHub repository</li>
+  <li>Click <strong>Settings</strong> -> <strong>Secrets and variables</strong> -> <strong>Actions</strong></li>
+  <li>Click <strong>New repository secret</strong></li>
+  <li>Name: <code>MERGE_BETTER_WEBHOOK_URL</code></li>
+  <li>Value: (paste the webhook URL from the app)</li>
+  <li>Click <strong>Add secret</strong></li>
+</ol>
+
+<h3>Step 2 - Find Your Policy ID</h3>
+<p>Every workflow <strong>must</strong> include a <code>policyId</code> to specify which policy to enforce.</p>
+<ol>
+  <li>Go to <strong>Merge Policies</strong> in your Jira project settings</li>
+  <li>The <strong>ID</strong> column on the dashboard shows the policy number (e.g. <code>1</code>, <code>2</code>, <code>3</code>)</li>
+  <li>Note the ID of the policy you want this repo to enforce</li>
+</ol>
+<div class="warn"><strong>[!] policyId is required.</strong> Workflows submitted without a <code>policyId</code> will be rejected.</div>
+
+<h3>Step 3 - Add the Workflow File</h3>
+<p>Create a file at <code>.github/workflows/merge-check.yml</code> in your repository.<br>
+Replace <code>YOUR_POLICY_ID</code> with the Policy ID from Step 2:</p>
+
+<pre><code><span class="cm"># .github/workflows/merge-check.yml</span>
+<span class="kw">name:</span> <span class="str">MergeBetter Jira Policy Check</span>
+
+<span class="kw">on:</span>
+  <span class="kw">pull_request:</span>
+    <span class="kw">types:</span> <span class="str">[opened, synchronize, reopened, edited]</span>
+
+<span class="kw">permissions:</span>
+  <span class="kw">pull-requests:</span> <span class="str">write</span>   <span class="cm"># needed to post a comment on the PR</span>
+
+<span class="kw">jobs:</span>
+  <span class="kw">jira-policy-check:</span>
+    <span class="kw">runs-on:</span> <span class="str">ubuntu-latest</span>
+    <span class="kw">steps:</span>
+      - <span class="kw">name:</span> <span class="fn">Extract Jira Issue Key from PR Title</span>
+        <span class="kw">id:</span> extract
+        <span class="kw">env:</span>
+          <span class="kw">PR_TITLE:</span> <span class="str">"${{ github.event.pull_request.title }}"</span>
+        <span class="kw">run:</span> |
+          ISSUE_KEY=$(echo "$PR_TITLE" \
+            | grep -oE '[A-Z]+-[0-9]+' | head -1)
+          if [ -z "$ISSUE_KEY" ]; then
+            echo "[X] No Jira issue key found in PR title."
+            echo "    Please include the key, e.g: NEON-123 Your PR title"
+            exit 1
+          fi
+          echo "[OK] Found Jira issue key: $ISSUE_KEY"
+          echo "issue_key=$ISSUE_KEY" >> $GITHUB_OUTPUT
+
+      - <span class="kw">name:</span> <span class="fn">Check Jira Merge Policy</span>
+        <span class="kw">env:</span>
+          <span class="kw">ISSUE_KEY:</span>  <span class="str">"${{ steps.extract.outputs.issue_key }}"</span>
+          <span class="kw">BASE_REF:</span>   <span class="str">"${{ github.base_ref }}"</span>
+          <span class="kw">WEBHOOK_URL:</span> <span class="str">"${{ secrets.MERGE_BETTER_WEBHOOK_URL }}"</span>
+          <span class="kw">GH_TOKEN:</span>   <span class="str">"${{ github.token }}"</span>
+          <span class="kw">PR_NUMBER:</span>  <span class="str">"${{ github.event.pull_request.number }}"</span>
+        <span class="kw">run:</span> |
+          JSON_BODY="{\"issueKey\":\"$ISSUE_KEY\",\"branch\":\"$BASE_REF\",\"policyId\":<span class="pl">YOUR_POLICY_ID</span>}"
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "$JSON_BODY" \
+            "$WEBHOOK_URL")
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          echo "-- MergeBetter Response --"
+          echo "$BODY" | jq . 2>/dev/null || echo "$BODY"
+          echo "--------------------------"
+
+          ALLOWED=$(echo "$BODY" | jq -r '.allowed // false')
+
+          if [ "$ALLOWED" = "true" ]; then
+            echo "[OK] All merge policies passed. PR is clear to merge."
+            {
+              echo "## MergeBetter: All checks passed"
+              echo "Issue **$ISSUE_KEY** satisfies all merge policies for branch **$BASE_REF**."
+            } >> $GITHUB_STEP_SUMMARY
+          else
+            echo "[X] Merge blocked by MergeBetter policy:"
+            echo "$BODY" | jq -r '.failures[] | "  Policy : \(.policy)\n  Branch : \(.rule)\n  Reason : \(.reason)"'
+
+            <span class="cm"># Post a comment directly on the PR conversation tab</span>
+            {
+              echo "## MergeBetter: Merge Blocked"
+              echo ""
+              echo "Issue **$ISSUE_KEY** does not meet the merge policy for branch **$BASE_REF**."
+              echo ""
+              echo "| Policy | Branch Rule | Reason |"
+              echo "|--------|-------------|--------|"
+              echo "$BODY" | jq -r '.failures[] | "| \(.policy) | \(.rule) | \(.reason) |"'
+            } | gh pr comment "$PR_NUMBER" --body-file -
+
+            <span class="cm"># Also write to the step summary (visible via the "Details" link)</span>
+            {
+              echo "## MergeBetter: Merge Blocked"
+              echo ""
+              echo "| Policy | Branch Rule | Reason |"
+              echo "|--------|-------------|--------|"
+              echo "$BODY" | jq -r '.failures[] | "| \(.policy) | \(.rule) | \(.reason) |"'
+            } >> $GITHUB_STEP_SUMMARY
+
+            exit 1
+          fi</code></pre>
+
+<div class="tip"><strong>Example with Policy ID 1:</strong> Replace <code>YOUR_POLICY_ID</code> with <code>1</code> in the workflow above. Do not add quotes around the number - it must be a JSON integer.</div>
+
+<h3>Step 4 - Run the Workflow Once First</h3>
+<div class="warn"><strong>[!] Required before Step 5:</strong> GitHub only shows a status check in the Branch Protection search box <strong>after it has run at least once</strong> on the repository. You must trigger the workflow before you can add it as a required check.</div>
+<p>To trigger the first run:</p>
+<ol>
+  <li>Make sure the <code>.github/workflows/merge-check.yml</code> file is committed and pushed to your default branch</li>
+  <li>Open any pull request in the repository (the PR title must include a Jira issue key, e.g. <code>NEON-123 Test run</code>)</li>
+  <li>Wait for the <strong>jira-policy-check</strong> workflow to run - you will see it appear under the PR's checks</li>
+  <li>Once it has run (pass or fail), GitHub registers the check name and it becomes searchable in Branch Protection settings</li>
+</ol>
+
+<h3>Step 5 - Block the Merge Button (Branch Protection Rules)</h3>
+<p>The workflow failing alone does <strong>not</strong> prevent developers from clicking Merge. You must configure GitHub Branch Protection.</p>
+<ol>
+  <li>Go to your GitHub repository -> <strong>Settings</strong> -> <strong>Branches</strong></li>
+  <li>Click <strong>Add branch protection rule</strong> (or edit an existing one)</li>
+  <li>Set <strong>Branch name pattern</strong> to <code>main</code> (repeat for <code>release-*</code>, <code>hotfix-*</code>, etc.)</li>
+  <li>Enable <strong>"Require status checks to pass before merging"</strong></li>
+  <li>In the search box, type <code>jira-policy-check</code> - it will now appear in the list; select it</li>
+  <li>Enable <strong>"Do not allow bypassing the above settings"</strong></li>
+  <li>Click <strong>Save changes</strong></li>
+</ol>
+<div class="tip"><strong>Check not appearing?</strong> It means the workflow has not run yet on this repo. Go back to Step 4 and open a test PR first.</div>
+<p>The merge button will now be <strong>locked</strong> until the policy check passes:</p>
+<pre><code>Some checks were not successful
+  [X] jira-policy-check - Merge blocked: Ticket must be In Progress
+
+  [ Merging is blocked ]   &lt;- button disabled</code></pre>
+<div class="info"><strong>Repeat Steps 4-5</strong> for each protected branch (<code>main</code>, <code>release-*</code>, <code>develop</code>, etc.).</div>
+
+<h3>Step 5 - PR Title Format</h3>
+<p>Developers must include the Jira issue key in their <strong>PR title</strong>:</p>
+<table>
+  <tr><th>PR Title</th><th>Issue Key Detected</th></tr>
+  <tr><td><code>NEON-123 Fix login bug</code></td><td><span class="badge-ok">[OK] NEON-123</span></td></tr>
+  <tr><td><code>[NEON-456] Add dark mode</code></td><td><span class="badge-ok">[OK] NEON-456</span></td></tr>
+  <tr><td><code>Fix login bug</code></td><td><span class="badge-err">[X] No key found - check fails immediately</span></td></tr>
+  <tr><td><code>fix/NEON-789-payment</code></td><td><span class="badge-err">[X] Not detected (branch name is ignored)</span></td></tr>
+</table>
+<div class="tip"><strong>Team convention:</strong> Ask developers to always start PR titles with the Jira issue key: <code>ABC-123 Short description</code></div>
+
+<hr>
+
+<!-- ===== SECTION 10 ===== -->
+<h2 id="s10">10. JQL Query Examples</h2>
+
+<h3>Basic Status Check</h3>
+<pre><code>status = "In Progress"</code></pre>
+<p>Issue must currently be In Progress.</p>
+
+<h3>Status + Fix Version</h3>
+<pre><code>status = "In Progress" AND fixVersion = "2.1.0"</code></pre>
+<p>Issue must be In Progress AND assigned to fix version 2.1.0.</p>
+
+<h3>Done or In Review</h3>
+<pre><code>status in ("In Review", "Done")</code></pre>
+<p>Issue must be either In Review or Done.</p>
+
+<h3>Specific Issue Types Only</h3>
+<pre><code>issuetype in (Bug, Story) AND status = "In Progress"</code></pre>
+<p>Only Bugs and Stories are allowed, and they must be In Progress.</p>
+
+<h3>Sprint-based Validation</h3>
+<pre><code>sprint in openSprints() AND status != "To Do"</code></pre>
+<p>Issue must be in the current open sprint and not sitting in To Do.</p>
+
+<h3>Fix Version + Issue Type</h3>
+<pre><code>fixVersion = "3.0.0" AND issuetype = Story AND status = "Done"</code></pre>
+<p>Only Done Stories targeting version 3.0.0.</p>
+
+<h3>Priority Gate</h3>
+<pre><code>priority in (High, Critical) AND status = "In Progress"</code></pre>
+<p>Only high or critical priority issues actively being worked on.</p>
+
+<h3>Assigned Issues Only</h3>
+<pre><code>assignee is not EMPTY AND status = "In Progress"</code></pre>
+<p>Issue must be assigned to someone and In Progress.</p>
+
+<div class="tip"><strong>Tip:</strong> Test your JQL in Jira's issue search (<code>/issues</code>) first, then paste it into MergeBetter's JQL field and click <strong>Test JQL</strong> to confirm it is valid.</div>
+
+<hr>
+
+<!-- ===== SECTION 11 ===== -->
+<h2 id="s11">11. Multiple Policies &amp; Repos</h2>
+<p>You can create multiple policies in the same Jira project - one per team, repo, or release track.</p>
+
+<h3>Example Setup</h3>
+<table>
+  <tr><th>Policy ID</th><th>Policy Name</th><th>Used By</th></tr>
+  <tr><td>1</td><td>Frontend Policy</td><td><code>frontend-app</code> GitHub repo</td></tr>
+  <tr><td>2</td><td>Backend Policy</td><td><code>backend-api</code> GitHub repo</td></tr>
+  <tr><td>3</td><td>Release Policy</td><td>All repos during release freeze</td></tr>
+</table>
+
+<h3>Targeting Policies Per Repo</h3>
+<p>Each GitHub repo's workflow <strong>must</strong> include the <code>policyId</code> of the policy it enforces.</p>
+
+<p><strong>frontend-app</strong> workflow (<code>policyId: 1</code>):</p>
+<pre><code>JSON_BODY="{\"issueKey\":\"$ISSUE_KEY\",\"branch\":\"$BASE_REF\",\"policyId\":1}"</code></pre>
+
+<p><strong>backend-api</strong> workflow (<code>policyId: 2</code>):</p>
+<pre><code>JSON_BODY="{\"issueKey\":\"$ISSUE_KEY\",\"branch\":\"$BASE_REF\",\"policyId\":2}"</code></pre>
+
+<div class="warn"><strong>[!] policyId is required.</strong> Always set <code>policyId</code> explicitly in every workflow. This prevents a repo from being accidentally affected by a policy intended for a different team.</div>
+
+<hr>
+
+<!-- ===== SECTION 12 ===== -->
+<h2 id="s12">12. Frequently Asked Questions</h2>
+
+<p><strong>Q: Where do I find the Policy ID?</strong><br>
+A: On the Merge Policies dashboard, the first column is <strong>ID</strong> (1, 2, 3...). Use this number as the <code>policyId</code> in your workflow.</p>
+
+<p><strong>Q: What happens if there is no Jira issue key in the PR title?</strong><br>
+A: The check will fail with a message indicating no issue key was found. Instruct your team to always include the key in the PR title (e.g. <code>NEON-123 Fix login page</code>).</p>
+
+<p><strong>Q: Can I have the check pass if there's no matching policy for the branch?</strong><br>
+A: Yes. If no active policy has a rule matching the PR's target branch, MergeBetter returns a pass by default. Only matching rules are enforced.</p>
+
+<p><strong>Q: Can I test a policy without blocking real PRs?</strong><br>
+A: Yes - create a policy, leave it <strong>DISABLED</strong>, and enable it only when you're ready to enforce it.</p>
+
+<p><strong>Q: Does MergeBetter store my Jira data?</strong><br>
+A: No. Jira issue data is read in real-time per request and never stored. Only your policy configuration (names, branch patterns, JQL rules) is stored - within Atlassian's own Forge infrastructure.</p>
+
+<p><strong>Q: Does MergeBetter work with Jira Server or Data Center?</strong><br>
+A: No. MergeBetter is built on <strong>Atlassian Forge</strong> and works with <strong>Jira Cloud only</strong>.</p>
+
+<p><strong>Q: Can multiple GitHub repositories use the same webhook URL?</strong><br>
+A: Yes. Each repo must set <code>policyId</code> in its workflow to target its specific policy. This is required - not optional.</p>
+
+<p><strong>Q: What if my JQL references a field that doesn't exist in my project?</strong><br>
+A: The check will fail with a JQL error. Use the <strong>Test JQL</strong> button in the policy editor to validate your query before saving.</p>
+
+<hr>
+
+<!-- ===== SECTION 13 ===== -->
+<h2 id="s13">13. Troubleshooting</h2>
+
+<h3><span class="badge-err">[X]</span> PR check fails with "No Jira issue key found in PR title"</h3>
+<p><strong>Cause:</strong> The PR title doesn't contain a valid Jira issue key.<br>
+<strong>Fix:</strong> Rename the PR title to include the issue key. Format: <code>ABC-123 Your description</code></p>
+
+<h3><span class="badge-err">[X]</span> PR check fails with "Issue does not match policy"</h3>
+<p><strong>Cause:</strong> The Jira issue was found but doesn't satisfy the JQL rule.<br>
+<strong>Fix:</strong> Read the rejection message - it tells you exactly what needs to change on the Jira ticket (e.g. update the status, fix version, or issue type).</p>
+
+<h3><span class="badge-err">[X]</span> PR check fails with "Policy not found"</h3>
+<p><strong>Cause:</strong> The <code>policyId</code> in the workflow doesn't match any active policy.<br>
+<strong>Fix:</strong> Check the policy ID on the Merge Policies dashboard. Update the <code>policyId</code> in your GitHub Actions workflow.</p>
+
+<h3><span class="badge-err">[X]</span> GitHub Actions step fails (workflow error, not a policy failure)</h3>
+<p><strong>Cause:</strong> The webhook URL secret may be missing or incorrect.<br>
+<strong>Fix:</strong></p>
+<ol>
+  <li>Go to GitHub repo -> Settings -> Secrets -> Actions</li>
+  <li>Verify <code>MERGE_BETTER_WEBHOOK_URL</code> is set</li>
+  <li>Copy the URL again from the app (<strong>Show Webhook URL</strong>) and update the secret</li>
+</ol>
+
+<h3><span class="badge-err">[X]</span> "Test JQL" shows error: "Expecting a field name at the end of the query"</h3>
+<p><strong>Cause:</strong> Your JQL is syntactically incomplete - often a trailing <code>AND</code>, <code>OR</code>, or missing value.<br>
+<strong>Fix:</strong> Review the JQL for incomplete clauses. Example of bad JQL: <code>status = "In Progress" OR</code> (trailing OR is invalid).</p>
+
+<h3><span class="badge-err">[X]</span> Policy is active but PRs are not being checked</h3>
+<p><strong>Cause:</strong> The GitHub Actions workflow may not be set up, or it's only running on certain events.<br>
+<strong>Fix:</strong> Ensure your workflow triggers include <code>edited</code>:</p>
+<pre><code>on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]</code></pre>
+<p>The <code>edited</code> trigger is important - it re-runs the check when the PR title is updated.</p>
+
+<h3><span class="badge-err">[X]</span> PR check passes but the merge button is still not blocked</h3>
+<p><strong>Cause:</strong> Branch Protection Rules have not been configured in GitHub.<br>
+<strong>Fix:</strong></p>
+<ol>
+  <li>Go to GitHub repo -> <strong>Settings</strong> -> <strong>Branches</strong></li>
+  <li>Add or edit a branch protection rule for <code>main</code></li>
+  <li>Enable <strong>"Require status checks to pass before merging"</strong></li>
+  <li>Search for and add <code>jira-policy-check</code> as a required check</li>
+  <li>Save changes</li>
+</ol>
+
+<h3><span class="badge-err">[X]</span> "jira-policy-check" does not appear in GitHub Branch Protection search</h3>
+<p><strong>Cause:</strong> GitHub only lists a status check as a searchable option <strong>after it has run at least once</strong> on the repository. If you have never opened a PR with the workflow in place, the check name is unknown to GitHub.<br>
+<strong>Fix:</strong></p>
+<ol>
+  <li>Confirm the workflow file (<code>.github/workflows/merge-check.yml</code>) is pushed to your default branch</li>
+  <li>Open a test pull request with a Jira issue key in the title (e.g. <code>NEON-1 test</code>)</li>
+  <li>Let the <strong>jira-policy-check</strong> job run (it can pass or fail - either registers the name)</li>
+  <li>Return to Settings -> Branches -> Branch protection rule and search again</li>
+</ol>
+
+<h3><span class="badge-err">[X]</span> App not visible in Project Settings</h3>
+<p><strong>Cause:</strong> You may not have Jira admin permissions, or the app isn't installed.<br>
+<strong>Fix:</strong> Ask your Jira administrator to install MergeBetter from the Atlassian Marketplace.</p>
+
+<hr>
+
+<!-- ===== SECTION 14 ===== -->
+<h2 id="s14">14. Support</h2>
+<p>Having trouble? We're here to help.</p>
+<table>
+  <tr><th>Channel</th><th>Details</th></tr>
+  <tr><td><strong>Email</strong></td><td><a href="mailto:2nfactorial@gmail.com">2nfactorial@gmail.com</a></td></tr>
+  <tr><td><strong>Atlassian Marketplace</strong></td><td><a href="https://marketplace.atlassian.com">MergeBetter listing</a></td></tr>
+</table>
+<p>When contacting support, please include:</p>
+<ul>
+  <li>Your Jira Cloud site URL</li>
+  <li>The policy name and rule causing the issue</li>
+  <li>The error message shown (from GitHub or the app)</li>
+  <li>Your GitHub Actions workflow YAML (with secrets redacted)</li>
+</ul>
+
+<!-- ===== FOOTER ===== -->
+<div class="doc-footer">
+  <p>MergeBetter is built and maintained by <strong>2nfactorial</strong> - developer tools for modern engineering teams.<br>
+  Running entirely on Atlassian Forge. No external servers. No stored credentials.</p>
+</div>
+
+</body>
+</html>
